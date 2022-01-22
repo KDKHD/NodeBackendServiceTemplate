@@ -1,0 +1,3 @@
+{
+  "development": { "ENV": "DEVELOPMENT_DATABASE_URL" }
+}

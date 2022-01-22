@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@routes": ["./routes"],
+      "@routes/*": ["./routes/*"],
+      "@controllers": ["./controllers"],
+      "@controllers/*": ["./controllers/*"],
+      "@services": ["./services"],
+      "@services/*": ["./services/*"],
+      "@enums": ["./enums"],
+      "@enums/*": ["./enums/*"],
+      "@middleware": ["./middleware"],
+      "@middleware/*": ["./middleware/*"],
+      "@logging": ["./logging"],
+      "@db": ["./db"]
+    }
+  }
+}
