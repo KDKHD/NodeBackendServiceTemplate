@@ -1,4 +1,5 @@
 import { LoginWithProviderService } from '@services';
+import { findUserByUserId } from '@services/UserService';
 import { NextFunction, Request, Response } from 'express';
 
 const loginWithProvider = (req: Request, res: Response) => {
@@ -6,7 +7,7 @@ const loginWithProvider = (req: Request, res: Response) => {
   res.json({ message: result });
 };
 
-const loginHandler = (req: Request, res: Response, next: NextFunction) => {
+const loginHandler = async (req: Request, res: Response, next: NextFunction) => {
   if (req.user) {
     req.login(req.user, (err) => {
       if (err) {
@@ -14,7 +15,9 @@ const loginHandler = (req: Request, res: Response, next: NextFunction) => {
       }
     });
 
-    res.status(200).send()
+    const user = await findUserByUserId(req.user.user_id);
+
+    res.json(user).status(200).send();
   }
 };
 

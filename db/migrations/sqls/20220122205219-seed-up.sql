@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "users" (
 CREATE TABLE IF NOT EXISTS "emails" (
   "email_id" SERIAL PRIMARY KEY,
   "user_id" int NOT NULL,
-  "email" varchar NOT NULL,
+  "email" varchar NOT NULL UNIQUE,
   "verified" boolean DEFAULT false,
   "primary" boolean DEFAULT false,
   "created_at" timestamp DEFAULT (now())
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS "emails" (
 CREATE TABLE IF NOT EXISTS "phone_numbers" (
   "phone_number_id" SERIAL PRIMARY KEY,
   "user_id" int NOT NULL,
-  "phone_number" varchar NOT NULL,
+  "phone_number" varchar NOT NULL UNIQUE,
   "verified" boolean DEFAULT false,
   "primary" boolean DEFAULT false,
   "created_at" timestamp DEFAULT (now())

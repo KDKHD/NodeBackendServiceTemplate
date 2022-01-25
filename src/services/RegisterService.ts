@@ -1,6 +1,8 @@
+import pool from '@db';
 import { User } from '@shared/types';
+import niceError from 'exceptions/niceError';
 import { addEmail } from './EmailService';
-import { addPhoneNumber } from './PhoneService';
+import { addPhoneNumber } from './PhoneNumberService';
 import { createNewUser } from './UserService';
 
 type RegisterUserArgs = {
@@ -11,17 +13,27 @@ type RegisterUserArgs = {
   phoneNumber: string;
 };
 
-const registerUser = async (args: RegisterUserArgs): Promise<User> => {
+const registerUser = async (args: RegisterUserArgs): Promise<User | undefined> => {
   const { firstName, lastName, password, email, phoneNumber } = args;
 
   // TODO: Unique email and phone numbers only
-  
-  const user = await createNewUser(firstName, lastName, password);
+  try {
+    await pool.query('BEGIN');
 
-  await addEmail({ userId: user.user_id, email });
-  await addPhoneNumber({ userId: user.user_id, phoneNumber: phoneNumber });
+    const user = await createNewUser(firstName, lastName, password);
+    await addEmail({ userId: user.user_id, email });
+    await addPhoneNumber({ userId: user.user_id, phoneNumber: phoneNumber });
 
-  return user;
+    await pool.query('COMMIT');
+    return user;
+  } catch (e) {
+    await pool.query('ROLLBACK');
+    if (e instanceof niceError) {
+      throw e;
+    } else {
+      throw e;
+    }
+  }
 };
 
-export {registerUser}
+export { registerUser };
