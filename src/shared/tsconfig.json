@@ -4,13 +4,11 @@
     "esModuleInterop": true,
     "target": "es6",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist",
-    "strict": true,
-    "noImplicitAny": true,
     "baseUrl": "./src",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "./dist",
+    "outDir": "./dist",
   },
-  "include": ["src", "**/*.d.ts"],
   "lib": ["es2015"],
-  "extends": "./paths.json"
 }

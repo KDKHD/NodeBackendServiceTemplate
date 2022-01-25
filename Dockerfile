@@ -35,4 +35,4 @@ COPY ./paths.json ./
 COPY ./.env* ./
 
 USER node
-CMD TS_NODE_PROJECT=tsconfig.prod.json dumb-init node -r tsconfig-paths/register dist/app.js
+CMD TS_NODE_PROJECT=tsconfig.production.json dumb-init node -r tsconfig-paths/register dist/app.js

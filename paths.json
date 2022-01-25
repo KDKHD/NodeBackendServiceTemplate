@@ -12,7 +12,8 @@
       "@middleware": ["./middleware"],
       "@middleware/*": ["./middleware/*"],
       "@logging": ["./logging"],
-      "@db": ["./db"]
+      "@db": ["./db"],
+      "@shared/*": ["./shared/src/*"]
     }
   }
 }

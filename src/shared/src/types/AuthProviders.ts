@@ -1,6 +1,6 @@
 enum AuthProviders {
-  'LOCAL',
-  'INSTAGRAM',
+  'local',
+  'instagram',
 }
 
 export { AuthProviders };
