@@ -1,6 +1,9 @@
 import pool from '@db';
 import { User } from '@shared/types';
+import { RequestContext } from '@type/requestContext';
 import niceError from 'exceptions/niceError';
+import { modifyContext } from 'utils/context';
+import { getClient } from 'utils/pgClient';
 import { addEmail } from './EmailService';
 import { addPhoneNumber } from './PhoneNumberService';
 import { createNewUser } from './UserService';
@@ -13,25 +16,30 @@ type RegisterUserArgs = {
   phoneNumber: string;
 };
 
-const registerUser = async (args: RegisterUserArgs): Promise<User | undefined> => {
+const registerUser = async (
+  args: RegisterUserArgs,
+  ctx?: RequestContext
+): Promise<User | undefined> => {
   const { firstName, lastName, password, email, phoneNumber } = args;
 
-  // TODO: Unique email and phone numbers only
+  ctx = modifyContext(ctx, { client: await pool.connect() });
+
   try {
-    await pool.query('BEGIN');
+    await getClient(ctx).query('BEGIN');
 
-    const user = await createNewUser(firstName, lastName, password);
-    await addEmail({ userId: user.user_id, email });
-    await addPhoneNumber({ userId: user.user_id, phoneNumber: phoneNumber });
+    const user = await createNewUser({ firstName, lastName, password }, ctx);
+    await addEmail({ userId: user.user_id, email }, ctx);
+    await addPhoneNumber({ userId: user.user_id, phoneNumber: phoneNumber }, ctx);
 
-    await pool.query('COMMIT');
+    await getClient(ctx).query('COMMIT');
+
     return user;
-  } catch (e) {
-    await pool.query('ROLLBACK');
-    if (e instanceof niceError) {
-      throw e;
+  } catch (err) {
+    await getClient(ctx).query('ROLLBACK');
+    if (err instanceof niceError) {
+      throw err;
     } else {
-      throw e;
+      throw err;
     }
   }
 };

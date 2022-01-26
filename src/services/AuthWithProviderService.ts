@@ -1,5 +1,0 @@
-const execute = () => {
-
-} 
-
-export {execute}

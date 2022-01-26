@@ -13,6 +13,7 @@ const errorHandler = (err: Error, req: Request, res: Response, next: NextFunctio
     res.json({ message: err.message });
   }
   res.send();
+  throw err
 };
 
 export { errorHandler };
