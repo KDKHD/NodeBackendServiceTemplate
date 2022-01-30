@@ -1,5 +1,6 @@
+ARG IMAGE=node:16-alpine
 # Stage 1
-FROM node:16-alpine as base
+FROM ${IMAGE} as base
 
 WORKDIR /usr/app
 
@@ -13,7 +14,7 @@ COPY . .
 RUN npm run build
 
 # Stage 2
-FROM node:16-alpine
+FROM ${IMAGE}
 
 # Setup
 RUN apk add dumb-init
